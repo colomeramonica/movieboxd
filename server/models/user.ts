@@ -1,53 +1,66 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model, UUIDV4 } from 'sequelize';
 import { sequelize } from '../dabatase';
 
-export const User = sequelize.define('User', {
+interface UserAttributes {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  name: string;
+  avatar?: string;
+  bio?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export class User extends Model<UserAttributes> implements UserAttributes {
+  public id!: string;
+  public username!: string;
+  public email!: string;
+  public password!: string;
+  public name!: string;
+  public avatar?: string;
+  public bio?: string;
+  public createdAt?: Date;
+  public updatedAt?: Date;
+}
+
+User.init({
   id: {
     type: DataTypes.UUID,
-    primaryKey: true,
+    defaultValue: UUIDV4,
+    primaryKey: true
   },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  name: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   avatar: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: true
   },
   bio: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  lists: {
-    type: DataTypes.ARRAY(DataTypes.UUID),
-    allowNull: false,
-  },
-  reviews: {
-    type: DataTypes.ARRAY(DataTypes.UUID),
-    allowNull: false,
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
-})
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
+}, {
+  sequelize,
+  modelName: 'User',
+  timestamps: true
+});
+
+export default { User };

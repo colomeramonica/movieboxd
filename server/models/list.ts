@@ -1,40 +1,93 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model, UUIDV4 } from 'sequelize';
 import { sequelize } from '../dabatase';
+import { User } from './user';
 
-export const List = sequelize.define('List', {
+interface ListAttributes {
+  id: string;
+  userId: string;
+  name: string;
+  description?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+interface ListItemAttributes {
+  id: string;
+  listId: string;
+  movieId: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export class List extends Model<ListAttributes> implements ListAttributes {
+  public id!: string;
+  public userId!: string;
+  public name!: string;
+  public description?: string;
+  public private!: boolean;
+  public createdAt?: Date;
+  public updatedAt?: Date;
+}
+
+export class ListItem extends Model<ListItemAttributes> implements ListItemAttributes {
+  public id!: string;
+  public listId!: string;
+  public movieId!: number;
+  public createdAt?: Date;
+  public updatedAt?: Date;
+}
+
+List.init({
   id: {
     type: DataTypes.UUID,
-    primaryKey: true,
+    defaultValue: UUIDV4,
+    primaryKey: true
   },
-  user_id: {
+  userId: {
     type: DataTypes.UUID,
-    allowNull: false,
+    references: {
+      model: User,
+      key: 'id'
+    }
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  movies: {
-    type: DataTypes.ARRAY(DataTypes.UUID),
-    allowNull: false,
-  },
-  private: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false,
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
+  description: DataTypes.TEXT
+}, {
+  sequelize,
+  modelName: 'List',
+  timestamps: true
 });
+
+ListItem.init({
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: UUIDV4,
+    primaryKey: true
+  },
+  listId: {
+    type: DataTypes.UUID,
+    references: {
+      model: List,
+      key: 'id'
+    }
+  },
+  movieId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
+}, {
+  sequelize,
+  modelName: 'ListItem',
+  timestamps: true
+});
+
+User.hasMany(List, { foreignKey: 'userId' });
+List.belongsTo(User, { foreignKey: 'userId' });
+
+List.hasMany(ListItem, { foreignKey: 'listId' });
+ListItem.belongsTo(List, { foreignKey: 'listId' });
+
+export default { List, ListItem };

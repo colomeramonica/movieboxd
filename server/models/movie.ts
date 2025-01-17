@@ -1,51 +1,38 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../dabatase';
 
-export const Movie = sequelize.define('Movie', {
+export class Movie extends Model<MovieAttributes> implements MovieAttributes {
+  public id!: number;
+  public tmdbId!: number;
+  public title!: string;
+  public posterPath?: string;
+}
+
+interface MovieAttributes {
+  id: number;
+  tmdbId: number;
+  title: string;
+  posterPath?: string;
+}
+
+Movie.init({
   id: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: false
+  },
+  tmdbId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true
   },
   title: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
-  year: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  summary: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  poster: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  reviews: {
-    type: DataTypes.ARRAY(DataTypes.UUID),
-    allowNull: false,
-  },
-  director: {
-    type: DataTypes.ARRAY(DataTypes.UUID),
-    allowNull: false,
-  },
-  genre: {
-    type: DataTypes.ARRAY(DataTypes.UUID),
-    allowNull: false,
-  },
-  cast: {
-    type: DataTypes.ARRAY(DataTypes.UUID),
-    allowNull: false,
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
+  posterPath: DataTypes.STRING
+}, {
+  sequelize,
+  modelName: 'Movie',
+  timestamps: false
 });
