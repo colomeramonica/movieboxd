@@ -1,6 +1,7 @@
 import { User } from "../models/user";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 
 interface CreateAccountRequest extends Request {
   body: {
@@ -32,7 +33,14 @@ interface GetProfileRequest extends Request {
 
 export const createAccount = async (req: CreateAccountRequest, res: Response) => {
   try {
-    await User.create({ ...req.body, id: uuidv4() });
+    const { password } = req.body;
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+    await User.create({
+      id: uuidv4(),
+      ...req.body,
+      password: hashedPassword,
+    });
     return res.status(201).json('Account created successfully.');
   } catch (error) {
     return res.status(500).json({
@@ -78,6 +86,35 @@ export const getAllUsers = async (req: Request, res: Response) => {
   } catch (error) {
     return res.json({
       message: "Error finding users.",
+      error: error,
+    });
+  }
+};
+
+export const login = async (req: Request, res: Response) => { 
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({
+        message: "Invalid password.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Login successful.",
+    });
+  } catch (error) {
+    return res.json({
+      message: "Error logging in.",
       error: error,
     });
   }

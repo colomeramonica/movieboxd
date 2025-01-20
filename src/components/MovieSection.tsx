@@ -37,7 +37,7 @@ export default function MovieSection({ list, itemsPerPage, title }: { list: Movi
   return (
     <section>
       <div className="flex flex-row justify-between">
-        <h1 className="font-light font-sans mx-3 text-body tracking-wide uppercase">{title}</h1>
+        <h1 className="font-light font-sans mx-3 text-gray-500 tracking-wide uppercase">{title}</h1>
         <div className="align-middle flex flex-row justify-between">
           {startStep >= itemsPerPage &&
             <ChevronLeft

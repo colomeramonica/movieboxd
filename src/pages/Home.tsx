@@ -21,9 +21,8 @@ export default function Home() {
     fetchPopularMovies();
   }, []);
 
-
   return (
-    <div className="bg-background h-screen">
+    <div className="bg-bunker-800 min-h-screen">
       <div className="now-playing p-3">
         <MovieSection list={nowPlayingMovies} itemsPerPage={moviesPerPage} title="Now Playing" />
       </div>
