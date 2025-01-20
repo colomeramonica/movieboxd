@@ -7,7 +7,7 @@ export default {
   theme: {
     colors: {
       background: '#15181C',
-      text: '#99AABB',
+      body: '#99AABB',
       green: '#02C030',
       white: '#F9FAFA',
       detail: '#FF900F'
