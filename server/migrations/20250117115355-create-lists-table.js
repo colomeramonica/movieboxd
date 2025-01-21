@@ -21,16 +21,24 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false
         },
+        slug: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          unique: true
+        },
         description: Sequelize.TEXT,
         private: {
           type: Sequelize.BOOLEAN,
           defaultValue: false
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE
         }
-      },
-      {
-        timestamps: true,
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt'
       });
   },
 

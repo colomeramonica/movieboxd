@@ -3,13 +3,15 @@ import { useParams, useNavigate } from "react-router";
 import { getMovieDetails, getMovieReviews } from "../api";
 import { MovieInterface, Review } from "../types";
 import { CircleUserRound, Clock9, Heart, Plus, ArrowLeft, CalendarHeart, Clock, HeartIcon } from "lucide-react";
+import DetailsActionBar from "../components/DetailsActionBar";
 
 export default function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState<MovieInterface | null>(null);
   const [movieReviews, setMovieReviews] = useState<Review[]>([]);
+  const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
+
   const { id } = useParams();
   const navigate = useNavigate();
-  const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -55,26 +57,7 @@ export default function MovieDetails() {
                   src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
                   alt={movieDetails.title} />
               </div>
-              <div className="flex flex-col justify-center p-2">
-                <div className="flex">
-                  <button className="duration-500 flex group h-8 hover:border hover:border-west-side-500 hover:w-52 items-center justify-center relative rounded-full text-gray-300 transition-colors">
-                    <Clock size={20} className="absolute duration-500 group-hover:left-2 group-hover:stroke-west-side-500 h-10 left-10 rounded-full transition-all" />
-                    <span className="absolute duration-500 group-hover:opacity-100 opacity-0 text-west-side-500 transition-all">Add to watchlist</span>
-                  </button>
-                </div>
-                <div className="">
-                  <button className="duration-500 flex group h-8 hover:border hover:border-malachite-500 hover:w-52 items-center justify-center relative rounded-full text-gray-300 transition-colors">
-                    <Plus size={20} className="absolute duration-500 group-hover:fill-malachite-600 group-hover:left-2 group-hover:stroke-malachite-600 h-10 left-10 rounded-full transition-all" />
-                    <span className="absolute duration-500 group-hover:opacity-100 opacity-0 text-malachite-500 transition-all">Log review</span>
-                  </button>
-                </div>
-                <div className="">
-                  <button className="duration-500 flex group h-8 hover:border hover:border-east-bay-500 hover:w-52 items-center justify-center relative rounded-full text-gray-300 transition-colors">
-                    <HeartIcon size={20} className="absolute duration-500 group-hover:fill-east-bay-700 group-hover:left-2 group-hover:stroke-east-bay-700 h-10 left-10 rounded-full transition-all" />
-                    <span className="absolute duration-500 group-hover:opacity-100 opacity-0 text-east-bay-500 transition-all">Add to favorites</span>
-                  </button>
-                </div>
-              </div>
+              <DetailsActionBar />
             </div>
             <div className="backdrop-blur-lg backdrop-filter bg-opacity-30 bg-white p-4 relative rounded-2xl shadow-lg w-[500px] z-10">
               <div className="flex flex-col items-center justify-between">

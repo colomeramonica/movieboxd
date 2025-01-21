@@ -6,7 +6,7 @@ import MovieSection from "../components/MovieSection";
 export default function Home() {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<MovieInterface[]>([]);
   const [popularMovies, setPopularMovies] = useState<MovieInterface[]>([]);
-  const moviesPerPage = 7;
+  const moviesPerPage = 11;
 
   useEffect(() => {
     async function fetchNowPlayingMovies() {
@@ -22,7 +22,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-bunker-800 min-h-screen">
+    <div className="bg-gradient-to-br from-bunker-900 min-h-screen to-picton-blue-950">
       <div className="now-playing p-3">
         <MovieSection list={nowPlayingMovies} itemsPerPage={moviesPerPage} title="Now Playing" />
       </div>

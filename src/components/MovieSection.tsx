@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function MovieSection({ list, itemsPerPage, title }: { list: MovieInterface[], itemsPerPage: number, title: string }) {
   const [startStep, setStartStep] = useState(0);
-  const [endStep, setEndStep] = useState(7);
+  const [endStep, setEndStep] = useState(itemsPerPage);
   const [moviesShown, setMoviesShown] = useState<MovieInterface[]>([]);
 
   useEffect(() => {

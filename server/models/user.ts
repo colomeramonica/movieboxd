@@ -1,5 +1,5 @@
 import { DataTypes, Model, UUIDV4 } from 'sequelize';
-import { sequelize } from '../dabatase';
+import sequelize from './index';
 
 interface UserAttributes {
   id: string;

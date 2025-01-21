@@ -2,6 +2,7 @@ import { User } from "../models/user";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
+import { createDefaultLists } from "./list";
 
 interface CreateAccountRequest extends Request {
   body: {
@@ -36,11 +37,14 @@ export const createAccount = async (req: CreateAccountRequest, res: Response) =>
     const { password } = req.body;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    await User.create({
+    const newUser = await User.create({
       id: uuidv4(),
       ...req.body,
       password: hashedPassword,
     });
+    if (newUser) {
+      createDefaultLists({ userId: newUser.id });
+    }
     return res.status(201).json('Account created successfully.');
   } catch (error) {
     return res.status(500).json({

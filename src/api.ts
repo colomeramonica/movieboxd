@@ -49,3 +49,15 @@ export const getMovieReviews = async (movieId: string) => {
   });
   return response.data;
 };
+
+export const addToList = async ({ userId, movieId, listSlug }: { userId: string, movieId: string, listSlug: string }) => { 
+  const response = await axios.post(`http://localhost:3000/add-to-list`, { userId, movieId, listSlug },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }
+  );
+  return response.data;
+};

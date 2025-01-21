@@ -1,20 +1,21 @@
 import { DataTypes, Model, UUIDV4 } from 'sequelize';
-import { sequelize } from '../dabatase';
 import { User } from './user';
+import sequelize from './index';
 
 interface ListAttributes {
   id: string;
   userId: string;
   name: string;
+  slug: string;
   description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface ListItemAttributes {
   id: string;
   listId: string;
-  movieId: number;
+  movieId: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -23,16 +24,17 @@ export class List extends Model<ListAttributes> implements ListAttributes {
   public id!: string;
   public userId!: string;
   public name!: string;
+  public slug!: string;
   public description?: string;
   public private!: boolean;
-  public createdAt?: Date;
-  public updatedAt?: Date;
+  public createdAt!: Date;
+  public updatedAt!: Date;
 }
 
 export class ListItem extends Model<ListItemAttributes> implements ListItemAttributes {
   public id!: string;
   public listId!: string;
-  public movieId!: number;
+  public movieId!: string;
   public createdAt?: Date;
   public updatedAt?: Date;
 }
@@ -54,7 +56,20 @@ List.init({
     type: DataTypes.STRING,
     allowNull: false
   },
-  description: DataTypes.TEXT
+  slug: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  description: DataTypes.TEXT,
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
+  }
 }, {
   sequelize,
   modelName: 'List',

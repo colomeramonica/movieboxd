@@ -1,6 +1,7 @@
 import express from "express";
-import { sequelize } from "./database";
+import sequelize from './models/index';
 import { createAccount, editProfile, getAllUsers, getProfile } from "./controllers/user";
+import { addToList, getListById, getListsByUserId } from "./controllers/list";
 
 const app = express();
 const router = express.Router();
@@ -12,6 +13,9 @@ router.post('/create-account', createAccount);
 router.get('/users', getAllUsers);
 router.put('/profile/:userId', editProfile);
 router.get('/profile/:userId', getProfile);
+router.post('/add-to-list', addToList);
+router.get('/list/:listId', getListById);
+router.get('/lists', getListsByUserId);
 
 app.use(router);
 

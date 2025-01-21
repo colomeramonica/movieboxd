@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../dabatase';
+import sequelize from './index';
 
 export class Movie extends Model<MovieAttributes> implements MovieAttributes {
   public id!: number;
