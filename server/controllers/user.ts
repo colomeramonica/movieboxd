@@ -2,6 +2,7 @@ import { User } from "../models/user";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { createDefaultLists } from "./list";
 
 interface CreateAccountRequest extends Request {
@@ -20,15 +21,18 @@ interface EditProfileRequest extends Request {
     username?: string;
     email?: string;
     password?: string;
+    name?: string;
+    avatar?: string;
+    bio?: string;
   };
   params: {
-    userId: string;
+    username: string;
   };
 }
 
 interface GetProfileRequest extends Request {
   params: {
-    userId: string;
+    username: string;
   };
 }
 
@@ -45,7 +49,10 @@ export const createAccount = async (req: CreateAccountRequest, res: Response) =>
     if (newUser) {
       createDefaultLists({ userId: newUser.id });
     }
-    return res.status(201).json('Account created successfully.');
+    return res.status(201).json({
+      message: 'Account created successfully.',
+      code: 201,
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Unable to create account.",
@@ -56,8 +63,26 @@ export const createAccount = async (req: CreateAccountRequest, res: Response) =>
 
 export const editProfile = async (req: EditProfileRequest, res: Response) => {
   try {
-    const updatedUser = await User.update(req.body, { where: { id: req.params.userId } });
-    return res.status(200).json(updatedUser);
+    const user = await User.findOne({ where: { username: req.params.username } });
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+    let updatedData = { ...req.body };
+
+    if (req.body.password) {
+      const { password } = req.body;
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password, salt);
+      updatedData = { ...updatedData, password: hashedPassword };
+    }
+
+    await User.update(updatedData, { where: { id: user.id } });
+    return res.status(200).json({
+      message: "User updated successfully.",
+      code: 200,
+    });
   } catch (error) {
     return res.json({
       message: "Unable to update the user.",
@@ -68,8 +93,28 @@ export const editProfile = async (req: EditProfileRequest, res: Response) => {
 
 export const getProfile = async (req: GetProfileRequest, res: Response) => {
   try {
-    const user = await User.findByPk(req.params.userId);
+    const user = await User.findOne({ where: { username: req.params.username } });
     return res.status(200).json(user);
+  } catch (error) {
+    return res.json({
+      message: "User not found.",
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+export const deleteAccount = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({ where: { username: req.params.username } });
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+    await user.destroy();
+    return res.status(200).json({
+      message: "User deleted successfully. We're sorry to see you go.",
+    });
   } catch (error) {
     return res.json({
       message: "User not found.",
@@ -115,6 +160,8 @@ export const login = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       message: "Login successful.",
+      token: generateAccessToken(user.id),
+      user: user.id,
     });
   } catch (error) {
     return res.json({
@@ -122,5 +169,10 @@ export const login = async (req: Request, res: Response) => {
       error: error,
     });
   }
+};
+
+const generateAccessToken = (userId: string) => {
+  const secret = process.env.ACCESS_TOKEN_SECRET || 'default_secret';
+  return jwt.sign({ userId }, secret);
 };
 

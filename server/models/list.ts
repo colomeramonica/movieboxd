@@ -83,15 +83,23 @@ ListItem.init({
     primaryKey: true
   },
   listId: {
-    type: DataTypes.UUID,
+    type: DataTypes.STRING,
     references: {
       model: List,
       key: 'id'
     }
   },
   movieId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
   }
 }, {
   sequelize,

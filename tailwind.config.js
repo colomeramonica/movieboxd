@@ -110,7 +110,7 @@ export default {
         '900': '#4b4376',
         '950': '#2a2541',
       },
-
+      transparent: 'transparent',
       white: '#ffffff',
     },
     screens: {

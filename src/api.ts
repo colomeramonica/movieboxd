@@ -50,8 +50,8 @@ export const getMovieReviews = async (movieId: string) => {
   return response.data;
 };
 
-export const addToList = async ({ userId, movieId, listSlug }: { userId: string, movieId: string, listSlug: string }) => { 
-  const response = await axios.post(`http://localhost:3000/add-to-list`, { userId, movieId, listSlug },
+export const addToList = async ({ accessToken, movieId, listSlug }: { accessToken: string, movieId: string, listSlug: string }) => {
+  const response = await axios.post(`http://localhost:3000/add-to-list`, { accessToken, movieId, listSlug },
     {
       headers: {
         'Content-Type': 'application/json',
@@ -61,3 +61,15 @@ export const addToList = async ({ userId, movieId, listSlug }: { userId: string,
   );
   return response.data;
 };
+
+export const login = async ({ email, password }: { email: string, password: string }) => { 
+  const response = await axios.post(`http://localhost:3000/login`, { email, password },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }
+  );
+  return response.data;
+}

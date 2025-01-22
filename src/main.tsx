@@ -3,13 +3,18 @@ import './index.css'
 import { BrowserRouter, Routes, Route } from "react-router";
 import Home from './pages/Home';
 import MovieDetails from './pages/MovieDetails';
+import Login from './pages/Login';
+import AuthProvider from './AuthProvider';
+import PrivateRoute from './PrivateRoute';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-    <Routes>
-      <Route index element={<Home />} />
-      <Route path="/movie/:id" element={<MovieDetails />} />
-      {/* <Route index element={<Login />} /> */}
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+        <Route path="/movie/:id" element={<PrivateRoute><MovieDetails /></PrivateRoute>} />
+      </Routes>
+    </AuthProvider>
   </BrowserRouter>
 )

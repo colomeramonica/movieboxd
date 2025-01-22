@@ -11,6 +11,16 @@ export interface MovieInterface {
   reviews: Review[];
 }
 
+export interface UserInterface {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  username: string;
+  bio: string;
+  avatar: number;
+}
+
 export interface Genre {
   id: number;
   name: string;
@@ -21,4 +31,13 @@ export interface Review {
   author: string;
   content: string;
   created_at: string;
+}
+
+export interface LoginResponse {
+    token: string;
+    user: UserInterface;
+    message: string;
+  errors?: {
+    [key: string]: string[];
+  };
 }

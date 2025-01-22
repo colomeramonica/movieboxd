@@ -1,11 +1,12 @@
 import { List, ListItem } from "../models/list";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
+import { verifyAccessToken } from "./base";
 
 interface AddToListRequest extends Request { 
   body: {
     movieId: string;
-    userId: string;
+    accessToken: string;
     listSlug: string
   };
 };
@@ -16,11 +17,15 @@ interface CreateDefaultListsParams {
 
 export const addToList = async (req: AddToListRequest, res: Response) => {
   try {
-    const { movieId, userId, listSlug } = req.body;
+    const { movieId, accessToken, listSlug } = req.body;
+    const userId = verifyAccessToken(accessToken);
     const list = await List.findOne({ where: { userId, slug: listSlug } });
     const listId = list?.id;
     if (!listId) {
-      return res.status(404).json('List not found.');
+      return res.status(404).json({
+        message: "List not found.",
+        error: 404
+      });
     }
 
     await ListItem.create({
