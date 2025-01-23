@@ -9,11 +9,6 @@ movieboxd is a `letterboxd` copy app made with the purposes of improving React, 
 - add/remove movies from watchlist, favorites and custom lists
 - add reviews
 
-![image](https://github.com/user-attachments/assets/412d3551-dbe7-4624-92ff-f6da717d4fa4)
-
-
-![image](https://github.com/user-attachments/assets/b4d48dac-3469-4d46-bb3f-a36c7941c4c2)
-
 ### 👾 tech stack
 
 - React
