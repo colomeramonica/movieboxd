@@ -48,66 +48,43 @@ export default function DetailsActionBar() {
     });
   };
 
-  interface IconProps {
-    size?: number;
-    className?: string;
-  }
-
-  interface ButtonProps {
-    onClick: () => void;
-    loading: boolean;
-    icon: React.ComponentType<IconProps> | React.ComponentType<React.SVGProps<SVGSVGElement>>;
-    label: string;
-    isActive: boolean;
-    activeClass: string;
-    hoverClass: string;
-  }
-
-  const Button: React.FC<ButtonProps> = ({ onClick, loading, icon: Icon, label, isActive, activeClass, hoverClass }) => (
-    <button
-      onClick={onClick}
-      className="duration-200 flex group groupitems-center h-10 items-center overflow-x-visible overflow-y-clip p-2 relative rounded-lg space-x-2 text-center transition-colors w-14">
-      <span className={`absolute backdrop-blur-lg backdrop-filter bg-opacity-10 bg-white duration-300 group-hover:origin-top ${hoverClass} p-2 rounded-full shadow-lg top-0 transition-all`}>
-        {loading ? <LoaderCircle size={20} className={`animate-spin ${activeClass}`} /> : <Icon size={20} className={`hover:animate-bounce ${isActive ? activeClass : hoverClass}`} />}
-        <span className="-bottom-36 -translate-x-1/2 absolute duration-300 font-bold group-hover:-bottom-5 left-1/2 text-black text-center text-sm transform transition-all whitespace-nowrap">{label}</span>
-      </span>
-    </button>
-  );
-
   return (
     <section>
       <div className="flex flex-row gap-10 items-center justify-center p-3 rounded-2xl space-x-4">
-        <Button
+        <button
           onClick={() => setOpenNewReviewModal(true)}
-          loading={false}
-          icon={Plus}
-          label="Log review"
-          isActive={false}
-          activeClass="stroke-malachite-400"
-          hoverClass="hover:shadow-malachite-300/50"
-        />
-        <Button
+          className="duration-200 flex group groupitems-center h-16 overflow-x-visible overflow-y-clip p-2 relative rounded-lg space-x-2 text-center transition-colors w-14">
+          <span className="align-middle backdrop-blur-lg backdrop-filter bg-opacity-10 bg-white duration-300 flex group-hover:origin-top hover:shadow-malachite-300/50 items-center p-2 rounded-full shadow-lg top-0 transition-all">
+            <Plus size={20} className="hover:animate-bounce hover:fill-malachite-400 stroke-malachite-400" />
+            <span className="-bottom-36 -translate-x-1/2 absolute duration-300 font-bold group-hover:-bottom-5 left-1/2 text-black text-center text-malachite-400 text-sm transform transition-all whitespace-nowrap">Log review</span>
+          </span>
+        </button>
+        <button
           onClick={() => handleAddToList("watchlist", setWatchlistLoading, fetchList)}
-          loading={watchlistLoading}
-          icon={Clock}
-          label="Add to watchlist"
-          isActive={filmsWatchlisted}
-          activeClass="fill-west-side-400 stroke-west-side-200"
-          hoverClass="hover:shadow-west-side-500/50"
-        />
-        <Button
+          className="duration-200 flex group groupitems-center h-16 overflow-x-visible overflow-y-clip p-2 relative rounded-lg space-x-2 text-center transition-colors w-14">
+          <span className="backdrop-blur-lg backdrop-filter bg-opacity-10 bg-white duration-300 group-hover:origin-top hover:shadow-west-side-500/50 p-2 rounded-full shadow-lg top-0 transition-all">
+            {watchlistLoading ?
+              <LoaderCircle size={20} className="animate-spin" />
+              : <Clock size={20} className={`hover:animate-bounce ${filmsWatchlisted ? 'stroke-west-side-300 fill-west-side-400' : 'stroke-west-side-400'}`} />}
+            <span className="-bottom-36 -translate-x-1/2 absolute duration-300 font-bold group-hover:-bottom-5 left-1/2 text-black text-center text-sm text-west-side-400 transform transition-all whitespace-nowrap">Add to watchlist</span>
+          </span>
+        </button>
+        <button
           onClick={() => handleAddToList("favorites", setFavoritesLoading, fetchList)}
-          loading={favoritesLoading}
-          icon={Heart}
-          label="Add to favorites"
-          isActive={filmsFavorite}
-          activeClass="fill-east-bay-700"
-          hoverClass="hover:shadow-east-bay-400/50"
-        />
+          className="duration-200 flex group groupitems-center h-16 overflow-x-visible overflow-y-clip p-2 relative rounded-lg space-x-2 text-center transition-colors w-14">
+          <span className="backdrop-blur-lg backdrop-filter bg-opacity-10 bg-white duration-300 group-hover:origin-top hover:shadow-east-bay-400/50 p-2 rounded-full shadow-lg top-0 transition-all">
+            {favoritesLoading ?
+              <LoaderCircle size={20} className="animate-spin" />
+              : <Heart size={20} className={`hover:animate-bounce ${filmsFavorite ? 'fill-east-bay-700 stroke-east-bay-700' : 'hover:fill-east-bay-700 hover:stroke-east-bay-700'}  stroke-east-bay-700`} />}
+            <span className="-bottom-10 -translate-x-1/2 absolute duration-300 font-bold group-hover:-bottom-5 left-1/2 text-black text-center text-east-bay-300 text-sm transform transition-all whitespace-nowrap">Add to favorites</span>
+          </span>
+        </button>
+        {
+          openNewReviewModal && (
+            createPortal(<ReviewModal onClose={onClose} />, document.body)
+          )
+        }
       </div>
-      {openNewReviewModal && (
-        createPortal(<ReviewModal onClose={onClose} />, document.body)
-      )}
     </section>
   );
 }
