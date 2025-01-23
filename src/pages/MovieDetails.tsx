@@ -34,7 +34,7 @@ export default function MovieDetails() {
   };
 
   return (
-    <section className="bg-bunker-800 min-h-screen p-3">
+    <section className="bg-bunker-800 flex flex-col min-h-screen p-3">
       <div className="backdrop-blur-lg backdrop-filter bg-opacity-10 flex items-center mb-4 movie-poster p-4 relative rounded-2xl shadow-lg z-10">
         <button onClick={handleBackClick} className="flex items-center text-white">
           <ArrowLeft size={20} />
@@ -44,7 +44,7 @@ export default function MovieDetails() {
       </div>
       {movieDetails && (
         <>
-          <div className="flex flex-col gap-20 justify-center md:flex-row">
+          <div className="flex flex-col gap-20 items-center justify-center md:flex-row">
             <div className="absolute bg-center bg-cover blur-lg filter inset-0 z-0"
               style={{
                 backgroundImage: `url(https://image.tmdb.org/t/p/w500${movieDetails.poster_path})`,
@@ -56,30 +56,30 @@ export default function MovieDetails() {
                   className="h-[500px] rounded-lg shadow-lg w-[350px]"
                   src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
                   alt={movieDetails.title} />
+                <DetailsActionBar />
               </div>
-              <DetailsActionBar />
             </div>
-            <div className="backdrop-blur-lg backdrop-filter bg-opacity-30 bg-white p-4 relative rounded-2xl shadow-lg w-[500px] z-10">
+            <div className="backdrop-blur-lg backdrop-filter bg-opacity-40 bg-white flex p-4 relative rounded-2xl shadow-lg w-[500px] z-10">
               <div className="flex flex-col items-center justify-between">
-                <h1 className="font-bold text-3xl">{movieDetails.title}</h1>
-                <div className="flex items-center space-x-2">
+                <h1 className="font-bold text-3xl text-bunker-900">{movieDetails.title}</h1>
+                <div className="flex items-center space-x-2 text-bunker-900">
                   <Star size={20} />
                   <span>{movieDetails.vote_average.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="font-light italic">{movieDetails.tagline}</span>
+                  <span className="font-light italic text-bunker-900">{movieDetails.tagline}</span>
                 </div>
                 <div className="flex flex-col items-center p-3">
-                  <p className="text-center text-pretty">
+                  <p className="text-bunker-900 text-center text-pretty">
                     {movieDetails.overview}
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 items-center p-3">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 text-bunker-900">
                     <Clock9 size={20} />
                     <span>{movieDetails.runtime} minutes</span>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 text-bunker-900">
                     <CalendarHeart size={20} />
                     <span>{new Date(movieDetails.release_date).toLocaleDateString('en-US', {
                       weekday: 'short',
@@ -92,7 +92,7 @@ export default function MovieDetails() {
                 </div>
                 <div className="flex flex-row gap-2 items-center justify-between p-3">
                   {movieDetails.genres.map((genre) => (
-                    <span key={genre.id} className="backdrop-blur-lg backdrop-filter bg-opacity-10 bg-white p-2 rounded-2xl shadow-lg">{genre.name}</span>
+                    <span key={genre.id} className="backdrop-blur-lg backdrop-filter bg-opacity-10 bg-white p-2 rounded-2xl shadow-lg text-bunker-900">{genre.name}</span>
                   ))}
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function MovieDetails() {
         </>
       )}
       {movieReviews && movieReviews.length > 0 && (
-        <div className="flex flex-col items-start justify-start my-8 p-6 w-full">
+        <div className="flex flex-col items-start justify-start my-24 p-6 w-full">
           <h1 className="font-bold font-sans text-3xl text-gray-400">Reviews</h1>
           <div className="flex flex-col gap-4 p-3">
             {movieReviews.map((review) => (
