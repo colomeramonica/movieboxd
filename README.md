@@ -1,4 +1,5 @@
-# 🍿🎥 movieboxd
+# 🍿🎥 movieboxd ![Static Badge](https://img.shields.io/badge/work%20in%20progress-yellow?style=for-the-badge)
+
 
 movieboxd is a `letterboxd` copy app made with the purposes of improving React, Typescript and UI skills.
 
