@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { getMovieDetails, getMovieReviews } from "../api";
 import { MovieInterface, Review } from "../types";
-import { CircleUserRound, Clock9, Heart, ArrowLeft, CalendarHeart, Star } from "lucide-react";
+import { CircleUserRound, Clock9, ArrowLeft, CalendarHeart, Star } from "lucide-react";
 import DetailsActionBar from "../components/DetailsActionBar";
 
 export default function MovieDetails() {

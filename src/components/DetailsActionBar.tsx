@@ -43,10 +43,15 @@ export default function DetailsActionBar() {
     });
   };
 
+  interface IconProps {
+    size?: number;
+    className?: string;
+  }
+
   interface ButtonProps {
     onClick: () => void;
     loading: boolean;
-    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    icon: React.ComponentType<IconProps> | React.ComponentType<React.SVGProps<SVGSVGElement>>;
     label: string;
     isActive: boolean;
     activeClass: string;
