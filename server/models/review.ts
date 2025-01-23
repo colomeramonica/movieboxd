@@ -5,7 +5,7 @@ import { User } from "./user";
 interface ReviewAttributes {
   id: string;
   userId: string;
-  movieId: number;
+  movieId: string;
   reviewText: string;
   rating: number;
   createdAt?: Date;
@@ -15,7 +15,7 @@ interface ReviewAttributes {
 export class Review extends Model<ReviewAttributes> implements ReviewAttributes {
   public id!: string;
   public userId!: string;
-  public movieId!: number;
+  public movieId!: string;
   public reviewText!: string;
   public rating!: number;
   public createdAt?: Date;
