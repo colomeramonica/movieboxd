@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.createTable('listItems',
       {
         id: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.UUID,
           primaryKey: true,
           autoIncrement: false
         },
@@ -18,7 +18,7 @@ module.exports = {
           }
         },
         movieId: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           allowNull: false
         },
         createdAt: {

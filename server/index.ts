@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import sequelize from './models/index';
 import { createAccount, deleteAccount, editProfile, getAllUsers, getProfile, login } from "./controllers/user";
-import { addToList, getListById, getListsByUserId } from "./controllers/list";
+import { addToList, getListDetails, getListsByUserId } from "./controllers/list";
 
 const app = express();
 const router = express.Router();
@@ -18,7 +18,7 @@ router.put('/profile/:username', editProfile);
 router.get('/profile/:username', getProfile);
 router.delete('/:username', deleteAccount);
 router.post('/add-to-list', addToList);
-router.get('/list/:listId', getListById);
+router.get('/list/:listSlug', getListDetails);
 router.get('/lists', getListsByUserId);
 
 app.use(router);

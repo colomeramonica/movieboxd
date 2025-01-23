@@ -78,16 +78,11 @@ List.init({
 
 ListItem.init({
   id: {
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
+    type: DataTypes.STRING,
     primaryKey: true
   },
   listId: {
     type: DataTypes.STRING,
-    references: {
-      model: List,
-      key: 'id'
-    }
   },
   movieId: {
     type: DataTypes.STRING,

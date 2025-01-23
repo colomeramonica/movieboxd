@@ -62,6 +62,17 @@ export const addToList = async ({ accessToken, movieId, listSlug }: { accessToke
   return response.data;
 };
 
+export const getListDetails = async ({ accessToken, listSlug }: { accessToken: string, listSlug: string }) => {
+  const response = await axios.get(`http://localhost:3000/list/${listSlug}`, {
+    params: { accessToken },
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  });
+  return response.data;
+};
+
 export const login = async ({ email, password }: { email: string, password: string }) => { 
   const response = await axios.post(`http://localhost:3000/login`, { email, password },
     {

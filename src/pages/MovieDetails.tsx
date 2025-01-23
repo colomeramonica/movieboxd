@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { getMovieDetails, getMovieReviews } from "../api";
 import { MovieInterface, Review } from "../types";
-import { CircleUserRound, Clock9, Heart, ArrowLeft, CalendarHeart } from "lucide-react";
+import { CircleUserRound, Clock9, Heart, ArrowLeft, CalendarHeart, Star } from "lucide-react";
 import DetailsActionBar from "../components/DetailsActionBar";
 
 export default function MovieDetails() {
@@ -63,7 +63,7 @@ export default function MovieDetails() {
               <div className="flex flex-col items-center justify-between">
                 <h1 className="font-bold text-3xl">{movieDetails.title}</h1>
                 <div className="flex items-center space-x-2">
-                  <Heart size={20} />
+                  <Star size={20} />
                   <span>{movieDetails.vote_average.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center space-x-2">
