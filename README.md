@@ -29,9 +29,8 @@ npm install && cd server/ && npm install
 ```
 3. Run code
 ```
-npm run dev
+npm run dev && cd server/ && npm run dev
 ```
-in both the root folder and server/ folder
 
 ### Tech Stack
 
