@@ -1,8 +1,11 @@
-import { useState } from "react";
 import { Star } from "lucide-react";
 
-export default function Rating() {
-  const [rating, setRating] = useState(0);
+interface RatingProps {
+  rating: number;
+  setRating: (rating: number) => void;
+}
+
+export default function Rating({ rating, setRating }: RatingProps) {
 
   const ratingText = () => {
     switch (rating) {
@@ -32,27 +35,23 @@ export default function Rating() {
   return (
     <div className="flex flex-row items-center">
       {stars.map((star) => (
-        <>
-          <div key={star.id}>
-            <input
-              type="radio"
-              id={star.id}
-              name="rate"
-              value={star.value}
-              className="hidden peer"
-              checked={rating === star.value}
-              onChange={() => setRating(star.value)}
-            />
-            <label
-              htmlFor={star.id}
-              className={`cursor-pointer text-west-side-400`}
-            >
-              <Star size={24} className={`${rating >= star.value ? `fill-west-side-400 stroke-wesfill-west-side-400` : 'fill-gray-400 stroke-gray-400'}`} />
-            </label>
-          </div>
-          <div className="flex flex-row items-center">
-          </div>
-        </>
+        <div key={star.id}>
+          <input
+            type="radio"
+            id={star.id}
+            name="rate"
+            value={star.value}
+            className="hidden peer"
+            checked={rating === star.value}
+            onChange={() => setRating(star.value)}
+          />
+          <label
+            htmlFor={star.id}
+            className={`cursor-pointer text-west-side-400`}
+          >
+            <Star size={24} className={`${rating >= star.value ? `fill-west-side-400 stroke-wesfill-west-side-400` : 'fill-gray-400 stroke-gray-400'}`} />
+          </label>
+        </div>
       ))}
       <span className="flex items-center ml-3 text-bunker-800">{ratingText()}</span>
     </div>

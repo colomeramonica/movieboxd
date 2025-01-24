@@ -29,7 +29,7 @@ export const reviewsByMovie = async (req: Request, res: Response) => {
 
 export const newReview = async (req: Request, res: Response) => {
   try {
-    const user = await Review.create(req.body);
+    const user = await Review.create({reviewText: req.body.review, ...req.body});
     return res.status(201).json(user);
   } catch (error) {
     return res.json({

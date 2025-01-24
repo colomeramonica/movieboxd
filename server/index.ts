@@ -3,6 +3,7 @@ import cors from "cors";
 import sequelize from './models/index';
 import { createAccount, deleteAccount, editProfile, getAllUsers, getProfile, login } from "./controllers/user";
 import { addToList, getListDetails, getListsByUserId } from "./controllers/list";
+import { newReview } from "./controllers/review";
 
 const app = express();
 const router = express.Router();
@@ -14,12 +15,13 @@ app.use(cors());
 router.post('/create-account', createAccount);
 router.post('/login', login);
 router.get('/users', getAllUsers);
-router.put('/profile/:username', editProfile);
-router.get('/profile/:username', getProfile);
+router.put('/profile', editProfile);
+router.get('/profile', getProfile);
 router.delete('/:username', deleteAccount);
 router.post('/add-to-list', addToList);
 router.get('/list/:listSlug', getListDetails);
 router.get('/lists', getListsByUserId);
+router.post('/add-review', newReview);
 
 app.use(router);
 

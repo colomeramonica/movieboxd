@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createDefaultLists } from "./list";
+import { verifyAccessToken } from "./base";
 
 interface CreateAccountRequest extends Request {
   body: {
@@ -26,13 +27,13 @@ interface EditProfileRequest extends Request {
     bio?: string;
   };
   params: {
-    username: string;
+    accessToken: string;
   };
 }
 
 interface GetProfileRequest extends Request {
   params: {
-    username: string;
+    accessToken: string;
   };
 }
 
@@ -63,7 +64,9 @@ export const createAccount = async (req: CreateAccountRequest, res: Response) =>
 
 export const editProfile = async (req: EditProfileRequest, res: Response) => {
   try {
-    const user = await User.findOne({ where: { username: req.params.username } });
+    const accessToken = req.query.accessToken as string;
+    const userId = verifyAccessToken(accessToken);
+    const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({
         message: "User not found.",
@@ -93,7 +96,9 @@ export const editProfile = async (req: EditProfileRequest, res: Response) => {
 
 export const getProfile = async (req: GetProfileRequest, res: Response) => {
   try {
-    const user = await User.findOne({ where: { username: req.params.username } });
+    const accessToken = req.query.accessToken as string;
+    const userId = verifyAccessToken(accessToken);
+    const user = await User.findByPk(userId);
     return res.status(200).json(user);
   } catch (error) {
     return res.json({

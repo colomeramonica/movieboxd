@@ -18,7 +18,7 @@ export interface UserInterface {
   password: string;
   username: string;
   bio: string;
-  avatar: number;
+  avatar: string;
 }
 
 export interface Genre {

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { getMovieDetails, getMovieReviews } from "../api";
 import { MovieInterface, Review } from "../types";
-import { CircleUserRound, Clock9, ArrowLeft, CalendarHeart, Star } from "lucide-react";
+import { CircleUserRound, Clock9, CalendarHeart, Star } from "lucide-react";
 import DetailsActionBar from "../components/DetailsActionBar";
+import MenuBar from "../components/MenuBar";
 
 export default function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState<MovieInterface | null>(null);
@@ -11,7 +12,6 @@ export default function MovieDetails() {
   const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
 
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -25,23 +25,13 @@ export default function MovieDetails() {
     fetchMovieDetails();
   }, [id]);
 
-  const handleBackClick = () => {
-    navigate('/home');
-  };
-
   const toggleReviewExpansion = (id: string) => {
     setExpandedReviewId(expandedReviewId === id ? null : id);
   };
 
   return (
     <section className="bg-bunker-800 flex flex-col min-h-screen p-3">
-      <div className="backdrop-blur-lg backdrop-filter bg-opacity-10 flex items-center mb-4 movie-poster p-4 relative rounded-2xl shadow-lg z-10">
-        <button onClick={handleBackClick} className="flex items-center text-white">
-          <ArrowLeft size={20} />
-          <span className="ml-2">Back</span>
-        </button>
-        <span className="ml-4 text-gray-400">/ Movies</span>
-      </div>
+      <MenuBar />
       {movieDetails && (
         <>
           <div className="flex flex-col gap-20 items-center justify-center md:flex-row">

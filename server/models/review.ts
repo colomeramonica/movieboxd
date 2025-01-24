@@ -50,6 +50,16 @@ Review.init({
       min: 0,
       max: 5
     }
+  },
+  createdAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  updatedAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
 }, {
   sequelize,

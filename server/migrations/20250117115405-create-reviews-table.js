@@ -32,6 +32,14 @@ module.exports = {
             min: 0,
             max: 5
           }
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE
         }
       });
   },

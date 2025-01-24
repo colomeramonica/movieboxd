@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getNowPlayingMovies, getPopularMovies } from '../api';
 import { MovieInterface } from '../types';
 import MovieSection from '../components/MovieSection';
+import MenuBar from '../components/MenuBar';
 
 export default function Home() {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<MovieInterface[]>([]);
@@ -21,9 +22,9 @@ export default function Home() {
   }, []);
 
   return (
-    <section className="bg-gradient-to-br from-bunker-900 h-full items-center justify-center min-h-screen to-picton-blue-950">
+    <section className="bg-gradient-to-br from-bunker-900 h-full items-center justify-center min-h-screen p-3 to-picton-blue-950">
+      <MenuBar />
       <div className="flex flex-col p-4">
-        <h1 className="bg-clip-text bg-gradient-to-l font-sans font-semibold from-malachite-400 p-3 text-3xl text-transparent to-east-bay-500 via-west-side-400">movieboxd</h1>
         <div className="backdrop-blur-lg backdrop-filter bg-opacity-20 bg-white flex flex-col gap-12 p-3 rounded-lg shadow-lg w-full">
           <div className="now-playing p-3">
             <MovieSection list={nowPlayingMovies} itemsPerPage={moviesPerPage} title="Now Playing" />

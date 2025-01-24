@@ -6,6 +6,7 @@ import MovieDetails from './pages/MovieDetails';
 import Login from './pages/Login';
 import AuthProvider from './AuthProvider';
 import PrivateRoute from './PrivateRoute';
+import Profile from './pages/Profile';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/movie/:id" element={<PrivateRoute><MovieDetails /></PrivateRoute>} />
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>

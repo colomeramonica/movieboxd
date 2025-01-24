@@ -73,6 +73,18 @@ export const getListDetails = async ({ accessToken, listSlug }: { accessToken: s
   return response.data;
 };
 
+export const addNewReview = async ({ accessToken, movieId, rating, review }: { accessToken: string, movieId: string, rating: number, review: string }) => { 
+  const response = await axios.post(`http://localhost:3000/add-review`, { accessToken, movieId, rating, review },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }
+  );
+  return response.data;
+}
+
 export const login = async ({ email, password }: { email: string, password: string }) => { 
   const response = await axios.post(`http://localhost:3000/login`, { email, password },
     {
@@ -80,6 +92,30 @@ export const login = async ({ email, password }: { email: string, password: stri
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
+    }
+  );
+  return response.data;
+}
+
+export const getProfile = async ({ accessToken }: { accessToken: string }) => { 
+  const response = await axios.get(`http://localhost:3000/profile?${accessToken}`, {
+    params: { accessToken },
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  });
+  return response.data;
+}
+
+export const editProfile = async ({ accessToken, username, email, password, name, avatar, bio }: { accessToken: string, username?: string, email?: string, password?: string, name?: string, avatar?: string, bio?: string }) => { 
+  const response = await axios.put(`http://localhost:3000/profile`, { accessToken, username, email, password, name, avatar, bio },
+    {
+      params: { accessToken },
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
     }
   );
   return response.data;
