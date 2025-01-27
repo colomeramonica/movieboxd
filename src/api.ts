@@ -51,7 +51,7 @@ export const getMovieReviews = async (movieId: string) => {
 };
 
 export const addToList = async ({ accessToken, movieId, listSlug }: { accessToken: string, movieId: string, listSlug: string }) => {
-  const response = await axios.post(`http://localhost:3000/add-to-list`, { accessToken, movieId, listSlug },
+  const response = await axios.post(`${import.meta.env.VITE_API_URL}/add-to-list`, { accessToken, movieId, listSlug },
     {
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export const addToList = async ({ accessToken, movieId, listSlug }: { accessToke
 };
 
 export const getListDetails = async ({ accessToken, listSlug }: { accessToken: string, listSlug: string }) => {
-  const response = await axios.get(`http://localhost:3000/list/${listSlug}`, {
+  const response = await axios.get(`${import.meta.env.VITE_API_URL}/list/${listSlug}`, {
     params: { accessToken },
     headers: {
       'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export const getListDetails = async ({ accessToken, listSlug }: { accessToken: s
 };
 
 export const addNewReview = async ({ accessToken, movieId, rating, review }: { accessToken: string, movieId: string, rating: number, review: string }) => { 
-  const response = await axios.post(`http://localhost:3000/add-review`, { accessToken, movieId, rating, review },
+  const response = await axios.post(`${import.meta.env.VITE_API_URL}/add-review`, { accessToken, movieId, rating, review },
     {
       headers: {
         'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export const addNewReview = async ({ accessToken, movieId, rating, review }: { a
 }
 
 export const login = async ({ email, password }: { email: string, password: string }) => { 
-  const response = await axios.post(`http://localhost:3000/login`, { email, password },
+  const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, { email, password },
     {
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ export const login = async ({ email, password }: { email: string, password: stri
 }
 
 export const getProfile = async ({ accessToken }: { accessToken: string }) => { 
-  const response = await axios.get(`http://localhost:3000/profile?${accessToken}`, {
+  const response = await axios.get(`${import.meta.env.VITE_API_URL}/profile?${accessToken}`, {
     params: { accessToken },
     headers: {
       'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export const getProfile = async ({ accessToken }: { accessToken: string }) => {
 }
 
 export const editProfile = async ({ accessToken, username, email, password, name, avatar, bio }: { accessToken: string, username?: string, email?: string, password?: string, name?: string, avatar?: string, bio?: string }) => { 
-  const response = await axios.put(`http://localhost:3000/profile`, { accessToken, username, email, password, name, avatar, bio },
+  const response = await axios.put(`${import.meta.env.VITE_API_URL}/profile`, { accessToken, username, email, password, name, avatar, bio },
     {
       params: { accessToken },
       headers: {
