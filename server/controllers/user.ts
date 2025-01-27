@@ -1,10 +1,12 @@
-import { User } from "../models/user";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createDefaultLists } from "./list";
 import { verifyAccessToken } from "./base";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 interface CreateAccountRequest extends Request {
   body: {
@@ -42,10 +44,11 @@ export const createAccount = async (req: CreateAccountRequest, res: Response) =>
     const { password } = req.body;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = await User.create({
-      id: uuidv4(),
-      ...req.body,
-      password: hashedPassword,
+    const newUser = await prisma.user.create({
+      data: {
+        ...req.body,
+        password: hashedPassword,
+      },
     });
     if (newUser) {
       createDefaultLists({ userId: newUser.id });
@@ -66,7 +69,7 @@ export const editProfile = async (req: EditProfileRequest, res: Response) => {
   try {
     const accessToken = req.query.accessToken as string;
     const userId = verifyAccessToken(accessToken);
-    const user = await User.findByPk(userId);
+    const user = await prisma.user.findFirst({ where: { id: Number(userId) } });
     if (!user) {
       return res.status(404).json({
         message: "User not found.",
@@ -81,7 +84,10 @@ export const editProfile = async (req: EditProfileRequest, res: Response) => {
       updatedData = { ...updatedData, password: hashedPassword };
     }
 
-    await User.update(updatedData, { where: { id: user.id } });
+    await prisma.user.update({
+      where: { id: user.id },
+      data: updatedData,
+    });
     return res.status(200).json({
       message: "User updated successfully.",
       code: 200,
@@ -98,28 +104,8 @@ export const getProfile = async (req: GetProfileRequest, res: Response) => {
   try {
     const accessToken = req.query.accessToken as string;
     const userId = verifyAccessToken(accessToken);
-    const user = await User.findByPk(userId);
+    const user = await prisma.user.findFirst({ where: { id: Number(userId) } });
     return res.status(200).json(user);
-  } catch (error) {
-    return res.json({
-      message: "User not found.",
-      error: error instanceof Error ? error.message : error,
-    });
-  }
-};
-
-export const deleteAccount = async (req: Request, res: Response) => {
-  try {
-    const user = await User.findOne({ where: { username: req.params.username } });
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found.",
-      });
-    }
-    await user.destroy();
-    return res.status(200).json({
-      message: "User deleted successfully. We're sorry to see you go.",
-    });
   } catch (error) {
     return res.json({
       message: "User not found.",
@@ -130,7 +116,7 @@ export const deleteAccount = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.findAll();
+    const users = await prisma.user.findMany();
     if (users.length === 0) {
       return res.status(404).json({
         message: "No users found.",
@@ -148,7 +134,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => { 
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       return res.status(404).json({
@@ -165,7 +151,7 @@ export const login = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       message: "Login successful.",
-      token: generateAccessToken(user.id),
+      token: generateAccessToken(String(user.id)),
       user: user.id,
     });
   } catch (error) {
