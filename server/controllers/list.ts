@@ -1,7 +1,9 @@
-import { List, ListItem } from "../models/list";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
 import { verifyAccessToken } from "./base";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 interface AddToListRequest extends Request { 
   body: {
@@ -12,14 +14,22 @@ interface AddToListRequest extends Request {
 };
 
 interface CreateDefaultListsParams {
-  userId: string;
+  userId: number;
 }
 
 export const addToList = async (req: AddToListRequest, res: Response) => {
   try {
     const { movieId, accessToken, listSlug } = req.body;
     const userId = verifyAccessToken(accessToken);
-    const list = await List.findOne({ where: { userId, slug: listSlug } });
+
+    const list = await prisma.list.findFirst(
+      {
+        where:
+        {
+          userId: Number(userId),
+          slug: listSlug
+        }
+      });
     if (!list || list === null) {
       return res.status(404).json({
         message: "List not found.",
@@ -27,9 +37,16 @@ export const addToList = async (req: AddToListRequest, res: Response) => {
       });
     }
 
-    const checkIfMovieIsInList = await ListItem.findOne({ where: { listId: list.id, movieId } });
+    const checkIfMovieIsInList = await prisma.listItem.findFirst(
+      {
+        where:
+        {
+          listId: list.id,
+          movieId: movieId
+        }
+      });
     if (checkIfMovieIsInList) {
-      ListItem.destroy({ where: { listId: list.id, movieId } });
+      await prisma.listItem.deleteMany({ where: { listId: Number(list.id), movieId: movieId } });
       return res.status(201).json({
         message: "Movie removed from list.",
         code: 201,
@@ -38,10 +55,11 @@ export const addToList = async (req: AddToListRequest, res: Response) => {
 
     const listId = list.id;
 
-    await ListItem.create({
-      id: uuidv4(),
-      listId,
-      movieId,
+    await prisma.listItem.create({
+      data: {
+        listId,
+        movieId: String(movieId),
+      },
     });
     return res.status(201).json({
       message: "Movie added to list.",
@@ -57,8 +75,8 @@ export const addToList = async (req: AddToListRequest, res: Response) => {
 
 export const getListsByUserId = async (req: Request, res: Response) => { 
   try {
-    const userId = req.query.userId as string;
-    const lists = await List.findAll({ where: { userId } });
+    const userId = req.query.userId;
+    const lists = await prisma.list.findMany({ where: { userId: Number(userId) } });
     return res.status(200).json(lists);
   } catch (error) {
     return res.status(500).json({
@@ -74,7 +92,7 @@ export const getListDetails = async (req: Request, res: Response) => {
     const listSlug = req.params.listSlug as string;
     const userId = verifyAccessToken(accessToken);
 
-    const list = await List.findOne({ where: { userId, slug: listSlug } });
+    const list = await prisma.list.findFirst({ where: { userId: Number(userId), slug: listSlug } });
     if (!list || list === null) {
       return res.status(404).json({
         message: "List not found.",
@@ -82,7 +100,7 @@ export const getListDetails = async (req: Request, res: Response) => {
       });
     }
 
-    const listItems = await ListItem.findAll({ where: { listId: list.id } });
+    const listItems = await prisma.listItem.findMany({ where: { listId: Number(list.id) } });
     return res.status(200).json(listItems);
   } catch (error) {
     return res.status(500).json({
@@ -92,22 +110,28 @@ export const getListDetails = async (req: Request, res: Response) => {
   }
 }
 
-export const createDefaultLists = ({ userId }: CreateDefaultListsParams): void => {
-  List.create({
-    id: uuidv4(),
-    userId,
-    name: "Watchlist",
-    slug: "watchlist",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+export const createDefaultLists = async ({ userId }: CreateDefaultListsParams) => {
+  try {
+    await prisma.list.create({
+      data: {
+        userId: userId,
+        name: "Watchlist",
+        slug: "watchlist",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    });
 
-  List.create({
-    id: uuidv4(),
-    userId,
-    name: "Favorites",
-    slug: "favorites",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+    await prisma.list.create({
+      data: {
+        userId: userId,
+        name: "Favorites",
+        slug: "favorites",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    });
+  } catch (error) { 
+    console.error("Unable to create default lists:", error);
+  }
 }

@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-import sequelize from './models/index';
-import { createAccount, deleteAccount, editProfile, getAllUsers, getProfile, login } from "./controllers/user";
+import { createAccount, editProfile, getAllUsers, getProfile, login } from "./controllers/user";
 import { addToList, getListDetails, getListsByUserId } from "./controllers/list";
 import { newReview } from "./controllers/review";
 
@@ -17,7 +16,6 @@ router.post('/login', login);
 router.get('/users', getAllUsers);
 router.put('/profile', editProfile);
 router.get('/profile', getProfile);
-router.delete('/:username', deleteAccount);
 router.post('/add-to-list', addToList);
 router.get('/list/:listSlug', getListDetails);
 router.get('/lists', getListsByUserId);
@@ -27,7 +25,6 @@ app.use(router);
 
 const startServer = async () => {
   try {
-    await sequelize.authenticate();
     console.log("Connection has been established successfully.");
 
     if (process.env.NODE_ENV) {
