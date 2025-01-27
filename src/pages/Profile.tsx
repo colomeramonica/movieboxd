@@ -19,7 +19,7 @@ export default function Profile() {
   const handleEditProfile = async () => {
     try {
       if (user) {
-        const response = await editProfile({ accessToken, username: user.username, email: user.email, password: user.password, name: user.name, avatar: user.avatar, bio: user.bio });
+        await editProfile({ accessToken, username: user.username, email: user.email, password: user.password, name: user.name, avatar: user.avatar, bio: user.bio });
       }
     } catch (error) {
       console.error(error);
