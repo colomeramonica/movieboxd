@@ -17,6 +17,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors());
 
 router.post('/create-account', createAccount);
 router.post('/login', login);
