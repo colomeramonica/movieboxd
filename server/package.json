@@ -11,9 +11,7 @@
   },
   "keywords": [
     "express",
-    "typescript",
-    "sequelize",
-    "sqlite"
+    "typescript"
   ],
   "author": "",
   "license": "ISC",
