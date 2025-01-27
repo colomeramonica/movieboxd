@@ -9,7 +9,14 @@ const router = express.Router();
 const port = 3000;
 
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: `${process.env.VITE_API_URL}`,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 
 router.post('/create-account', createAccount);
 router.post('/login', login);
