@@ -55,7 +55,7 @@ export const addToList = async ({ accessToken, movieId, listSlug }: { accessToke
     {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}`
+        'Access-Control-Allow-Origin': '*'
       }
     }
   );
@@ -67,7 +67,7 @@ export const getListDetails = async ({ accessToken, listSlug }: { accessToken: s
     params: { accessToken },
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}`
+      'Access-Control-Allow-Origin': '*'
     }
   });
   return response.data;
@@ -90,7 +90,7 @@ export const login = async ({ email, password }: { email: string, password: stri
     {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}`
+        'Access-Control-Allow-Origin': '*'
       }
     }
   );
@@ -102,7 +102,7 @@ export const getProfile = async ({ accessToken }: { accessToken: string }) => {
     params: { accessToken },
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}`
+      'Access-Control-Allow-Origin': '*'
     }
   });
   return response.data;
@@ -114,7 +114,7 @@ export const editProfile = async ({ accessToken, username, email, password, name
       params: { accessToken },
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': `${import.meta.env.VITE_API_URL}`
+        'Access-Control-Allow-Origin': '*'
       },
     }
   );
