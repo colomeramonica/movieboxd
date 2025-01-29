@@ -21,6 +21,12 @@ export interface UserInterface {
   avatar: string;
 }
 
+export interface ListItemInterface {
+  id: number;
+  listId: string;
+  movieId: number;
+}
+
 export interface Genre {
   id: number;
   name: string;
@@ -34,9 +40,9 @@ export interface Review {
 }
 
 export interface LoginResponse {
-    token: string;
-    user: UserInterface;
-    message: string;
+  token: string;
+  user: UserInterface;
+  message: string;
   errors?: {
     [key: string]: string[];
   };

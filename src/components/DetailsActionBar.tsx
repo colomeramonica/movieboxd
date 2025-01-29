@@ -3,7 +3,7 @@ import { addToList, getListDetails } from '../api';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import ReviewModal from './ReviewModal';
-import { MovieInterface } from '../types';
+import { ListItemInterface, MovieInterface } from '../types';
 
 interface DetailsActionBarProps {
   movie: MovieInterface;
@@ -19,7 +19,10 @@ export default function DetailsActionBar({ movie }: DetailsActionBarProps) {
   async function fetchList(slug: string) {
     const accessToken = localStorage.getItem('access-token') as string;
     const response = await getListDetails({ accessToken, listSlug: slug });
-    if (response && response.some((item) => item.movieId === movie.id)) {
+    if (
+      response &&
+      response.some((item: ListItemInterface) => item.movieId === movie.id)
+    ) {
       if (slug === 'favorites') {
         setFilmsFavorite(true);
       } else if (slug === 'watchlist') {
