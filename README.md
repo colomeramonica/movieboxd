@@ -11,7 +11,6 @@ movieboxd is a `letterboxd` copy app made with the purposes of improving React, 
 - Create account and login
 - Add movies to favorites and/or watchlist
 - Log review for movies
-- Create custom lists for grouping movies
 
 ### Pre Requisites
 
