@@ -6,6 +6,10 @@
 
 movieboxd is a `letterboxd` copy app made with the purposes of improving React, Typescript and UI skills.
 
+<img src="https://github.com/user-attachments/assets/2ade98c4-12a9-479a-96a3-a58792286a8d" width=800px />
+
+<img src="https://github.com/user-attachments/assets/36af6d79-a167-40ae-8245-d6720ed38b8a" width=800px />
+
 ### Features
 
 - Create account and login
