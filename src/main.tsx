@@ -8,12 +8,15 @@ import AuthProvider from './AuthProvider';
 import PrivateRoute from './PrivateRoute';
 import Profile from './pages/Profile';
 import SearchResults from './pages/SearchResults';
+import SignUp from './pages/SignUp';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route
           path="/home"
           element={

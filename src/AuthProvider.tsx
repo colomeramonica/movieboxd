@@ -13,10 +13,15 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('access-token') || null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem('access-token') || null
+  );
   const navigate = useNavigate();
 
-  const handleLogin = async (email: string, password: string): Promise<void> => {
+  const handleLogin = async (
+    email: string,
+    password: string
+  ): Promise<void> => {
     try {
       const response: LoginResponse = await login({ email, password });
       if (response.token) {

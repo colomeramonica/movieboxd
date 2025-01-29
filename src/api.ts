@@ -177,6 +177,25 @@ export const login = async ({
   return response.data;
 };
 
+export const signUp = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const response = await axios.post(
+    `${import.meta.env.VITE_API_URL}/create-account`,
+    { email, password },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  return response.data;
+};
+
 export const getProfile = async ({ accessToken }: { accessToken: string }) => {
   const response = await axios.get(
     `${import.meta.env.VITE_API_URL}/profile?${accessToken}`,

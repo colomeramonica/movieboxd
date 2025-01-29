@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AtSign, Eye, EyeClosed, LoaderCircle, Lock } from 'lucide-react';
 import { useAuth } from '../AuthProvider';
+import { useNavigate } from 'react-router';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,8 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { handleLogin } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -20,6 +23,10 @@ export default function Login() {
         setError(error?.data?.message || 'Login failed');
         setLoading(false);
       });
+  };
+
+  const sendToSignUp = () => {
+    navigate('/signup');
   };
 
   return (
@@ -92,7 +99,10 @@ export default function Login() {
             <span className="font-sans text-gray-700 text-sm">
               Don't have an account?
             </span>
-            <span className="cursor-pointer font-bold font-sans hover:text-picton-blue-700 text-picton-blue-600 text-sm">
+            <span
+              className="cursor-pointer font-bold font-sans hover:text-picton-blue-700 text-picton-blue-600 text-sm"
+              onClick={sendToSignUp}
+            >
               Sign up
             </span>
           </div>
