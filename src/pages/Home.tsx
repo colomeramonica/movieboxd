@@ -5,9 +5,11 @@ import MovieSection from '../components/MovieSection';
 import MenuBar from '../components/MenuBar';
 
 export default function Home() {
-  const [nowPlayingMovies, setNowPlayingMovies] = useState<MovieInterface[]>([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState<MovieInterface[]>(
+    []
+  );
   const [popularMovies, setPopularMovies] = useState<MovieInterface[]>([]);
-  const moviesPerPage = 6;
+  const moviesPerPage = 7;
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -27,13 +29,21 @@ export default function Home() {
       <div className="flex flex-col p-4">
         <div className="backdrop-blur-lg backdrop-filter bg-opacity-20 bg-white flex flex-col gap-12 p-3 rounded-lg shadow-lg w-full">
           <div className="now-playing p-3">
-            <MovieSection list={nowPlayingMovies} itemsPerPage={moviesPerPage} title="Now Playing" />
+            <MovieSection
+              list={nowPlayingMovies}
+              itemsPerPage={moviesPerPage}
+              title="Now Playing"
+            />
           </div>
           <div className="p-3 popular">
-            <MovieSection list={popularMovies} itemsPerPage={moviesPerPage} title="Popular" />
+            <MovieSection
+              list={popularMovies}
+              itemsPerPage={moviesPerPage}
+              title="Popular"
+            />
           </div>
         </div>
       </div>
     </section>
   );
-};
+}
